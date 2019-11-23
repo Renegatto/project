@@ -9,7 +9,7 @@ from function import All_courses
 
 get_movies = movies()
 get_courses = All_courses()
-Token = '871811425:AAHX5QPWtd3OvAfmPHbU1qbWyyhy62Nftr4'
+Token = '' #убрал
 
 
 keyboard1 = telebot.types.ReplyKeyboardMarkup(True, True)
