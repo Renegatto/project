@@ -4,17 +4,24 @@
   <title>Фильмы сегодня</title>
 </head>
 <body>
+    <style>
+        div.a {
+        text-align: center;
+                }
+    </style>
+<div class = 'a'>
 
     <p>
-        <ul>
+        
             {% for movies in mov %}
             
                 <li> {{movies}}  </li>
                       
             {% endfor %}
                     
-        </ul>
+        
      </p>
 <a href="http://127.0.0.1:5000">Главная страница</a> 
+</div>
 </body>
 </html>

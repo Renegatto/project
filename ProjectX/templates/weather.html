@@ -1,23 +1,51 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Погода</title>
+    <meta charset="UTF-8">
+    <title>Погода</title>
 </head>
 <body>
-<style>
-  div.a {
-  text-align: center;
-        }
-</style>
-<div class = 'a'>
-  <p>
-   {{'Температура в '}} {{m}} {{'='}}
-   {{t}}
-   {{'°'}}
-   
-  </p>
-</div>
-<a href="http://127.0.0.1:5000">Главная страница</a> 
+    <style>
+        div.a {
+        text-align: center;
+              }
+      </style>
+  <div class = 'a'>
+    
+    
+    <form action="" method="post">
+        <p>
+	    <label for="city">Укажите город</label>
+	    <input type="text" name="city">
+	</p>
+	
+	<p>
+	    <input type="submit">
+	</p>
+    </form>
+    <p>
+        {{'Температура в '}} {{m}} {{'='}}
+        {{t}}
+        {{'°'}}
+    </p>
+    <p>
+        {{'Влажность = '}}{{h}}
+        
+    </p>
+    <p>
+        {{'Температура в на следующие 3 часа в '}} {{m}} {{':'}}   
+    </p> 
+    <p>
+        {% for key, value in info.items() %}
+        <p>{{'Время : '}}{{key}}  {{"Температура - "}}{{value}}</p>
+        
+        {%endfor%}
+        
+
+        
+    </p>
+     
+     <a href="http://127.0.0.1:5000">Главная страница</a>
+  </div>
 </body>
 </html>

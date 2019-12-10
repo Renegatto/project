@@ -5,19 +5,27 @@
   <title>Курсы валют</title>
 </head>
 <body>
-
+    <style>
+        div.a {
+        text-align: center;
+              }
+    </style>
+<div class = 'a'>
+    
   <p>
-    <ul>
-        {% for key in sps.items() %}
+      
+      {% for key, value in sps.items() %}
+      
+      <li> {{key}} - {{value}} </li>
 
-          <li> {{key}}  {{sps[key]}} </li>
-          
-        {% endfor %}
+      {% endfor %}
+      
         
-    </ul>
+    
     
   </p>
 <a href="http://127.0.0.1:5000">Главная страница</a> 
+</div>
 
 </body>
 </html>
