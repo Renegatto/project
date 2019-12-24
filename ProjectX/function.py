@@ -39,9 +39,8 @@ def All_courses():  #courses или currency rates? По PEP8 - названия
 
 
 # @app.route('/weather', methods=['post', 'get'])
-def get_weather():
-    city = "Minsk"
-    hours = 9
+def get_weather(city="Minsk", hours=9):
+
     owm = pyowm.OWM('872dd8157b4dbabef93b11324b5ecabc')
     # if request.method == 'POST':
     #     city = request.form.get('city')
