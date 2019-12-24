@@ -3,11 +3,11 @@ from telebot import types
 import requests
 from bs4 import BeautifulSoup
 from flask import Flask
-from function import movies, All_courses, Get_weather
+from function import movies, All_courses, get_weather
 from datetime import timedelta, datetime
 
 
-weather = Get_weather()
+instant_weather = get_weather()["instant forecast"]
 get_movies = movies()
 get_currencies = All_courses()
 Token = '871811425:AAHX5QPWtd3OvAfmPHbU1qbWyyhy62Nftr4' 
@@ -43,8 +43,8 @@ def send_message(message):
         bot.send_message(message.chat.id,'\n'.join(currency_rate_messages))
 
     elif message.text.lower() == 'weather 🌡️':      
-        bot.send_message(message.chat.id, f'Погода в Минске - температура : {weather[0]}°C, влажность : {weather[1]}%')
-        if weather[0] <= 0:         #хардкод индексов. Либо стоит использовать дикт {"temperatur":,"humidity":}, 
+        bot.send_message(message.chat.id, f'Погода в Минске - температура : {instant_weather["temperature C"]}°C, влажность : {instant_weather["humidity"]}%')
+        if instant_weather["temperature C"] <= 0:         #хардкод индексов. Либо стоит использовать дикт {"temperatur":,"humidity":}, 
                                     #либо класс weather с полями temperature и humidity
                                     #либо функции humidity(weather), temperature(weather)
            bot.send_message(message.chat.id, 'Холодно,нужен шарф(')
