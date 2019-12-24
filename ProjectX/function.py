@@ -60,10 +60,11 @@ def get_weather(city="Minsk", hours=9):
         time = datetime.now() + timedelta(days=0, hours=three_hours)  
         weather = forecaster.get_weather_at(time)           
 
-        forecast_on_current_3_hours = {}
-        forecast_on_current_3_hours["time"]            = time.strftime('%H:%M')
-        forecast_on_current_3_hours["temperature_C"]   = weather.get_temperature('celsius')['temp']
-        forecast_on_current_3_hours["humidity"]        = weather.get_humidity()
+        forecast_on_current_3_hours = {
+            "time"          : time.strftime('%H:%M'),
+            "temperature_C" : weather.get_temperature('celsius')['temp'],
+            "humidity"      : weather.get_humidity()
+            }
 
         forecast_on_several_hours.append(forecast_on_current_3_hours)
     return {"instant forecast": instant_forecast ,"several hours forecast": forecast_on_several_hours}
