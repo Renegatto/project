@@ -14,8 +14,6 @@ Token = '871811425:AAHX5QPWtd3OvAfmPHbU1qbWyyhy62Nftr4'
 bot = telebot.TeleBot(Token)
 
 
-
-
 keyboard = types.ReplyKeyboardMarkup(True,True)
 button_mov = types.KeyboardButton(text = "movies 🎥")
 button_geo = types.KeyboardButton(text="Location 🎯", request_location=True)
@@ -29,15 +27,20 @@ keyboard.add(button_geo,button_mov,button_whr,button_Crs)
 def start_message(message):
     bot.send_message(message.chat.id,'Что хотите узнать? 😉', reply_markup=keyboard)
 
+def is_message_lowercase_an( whichMessage ): #а можно еще и попробовать внедрять ФП. Псевдо-каррирование, например
+    def equal_to( toTest ):                  #здесь для примера, но будь кода больше - могло бы быть полезно
+        return message.text.lower() == equalTo
+def answer_to_message( message ):
+    def answer_is( answer, parse_mode=None ):
+        if parse_mode :
+            return bot.send_message(message.chat.id, answer, parse_mode=parse_mode)
+        return bot.send_message(message.chat.id, answer)
+
 @bot.message_handler(content_types=['text'])
 def send_message(message):
 
-    def is_message_a( equalTo ):
-        return message.text.lower() == equalTo
-    def answer( message, parse_mode=None ):
-        if parse_mode :
-            return bot.send_message(message.chat.id, message, parse_mode=parse_mode)
-        return bot.send_message(message.chat.id, message)
+    is_message_a = is_message_lowercase_an(message)
+    answer       = answer_to_message(message)
 
     if is_message_a('movies 🎥'):
         answer('\n'.join(get_movies))
