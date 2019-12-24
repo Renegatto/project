@@ -9,7 +9,7 @@ from datetime import timedelta, datetime
 
 weather = Get_weather()
 get_movies = movies()
-get_courses = All_courses()
+get_currencies = All_courses()
 Token = '871811425:AAHX5QPWtd3OvAfmPHbU1qbWyyhy62Nftr4' 
 bot = telebot.TeleBot(Token)
 
@@ -35,12 +35,13 @@ def send_message(message):
         bot.send_message(message.chat.id,'\n'.join(get_movies))
     elif message.text.lower() == 'cours 💰':
         bot.send_message(message.chat.id,"*Курс на сегодня:*",parse_mode= 'Markdown')
-        cur = []    #что такое cur? это первая валюта? имена переменных должны стремиться избавлять от необходимости читать код, чтобы понять что в них лежит
-        cur2 = []   #что такое cur2? это вторая валюта? это, кстати, еще и не список, а строка, причем временная
-        for k, v in get_courses.items(): #что есть ключи и значения в get_courses?
-            cur = f'{k} - {v}' #непонятно, какие именно строки генерируются здесь
-            cur2.append(cur)
-        bot.send_message(message.chat.id,'\n'.join(cur2))
+
+        currency_rate_messages = [] 
+        for currency_name, currency_rate in get_currencies.items():
+            currency_rate_messages.append( f'{currency_name} - {currency_rate}' )
+
+        bot.send_message(message.chat.id,'\n'.join(currency_rate_messages))
+
     elif message.text.lower() == 'weather 🌡️':      
         bot.send_message(message.chat.id, f'Погода в Минске - температура : {weather[0]}°C, влажность : {weather[1]}%')
         if weather[0] <= 0:         #хардкод индексов. Либо стоит использовать дикт {"temperatur":,"humidity":}, 
