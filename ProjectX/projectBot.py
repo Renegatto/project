@@ -7,7 +7,7 @@ from function import movies, All_courses, get_weather
 from datetime import timedelta, datetime
 
 
-instant_weather = get_weather()["instant forecast"]
+weather = get_weather()["instant forecast"]
 get_movies = movies()
 get_currencies = All_courses()
 Token = '871811425:AAHX5QPWtd3OvAfmPHbU1qbWyyhy62Nftr4' 
@@ -31,24 +31,31 @@ def start_message(message):
 
 @bot.message_handler(content_types=['text'])
 def send_message(message):
-    if message.text.lower() == 'movies 🎥':
-        bot.send_message(message.chat.id,'\n'.join(get_movies))
-    elif message.text.lower() == 'cours 💰':
-        bot.send_message(message.chat.id,"*Курс на сегодня:*",parse_mode= 'Markdown')
 
-        currency_rate_messages = [] 
+    def is_message_a( equalTo ):
+        return message.text.lower() == equalTo
+    def answer( message, parse_mode=None ):
+        if parse_mode :
+            return bot.send_message(message.chat.id, message, parse_mode=parse_mode)
+        return bot.send_message(message.chat.id, message)
+
+    if is_message_a('movies 🎥'):
+        answer('\n'.join(get_movies))
+    elif is_message_a('cours 💰'):
+        answer("*Курс на сегодня:*", parse_mode='Markdown')
+
+        currency_rate_messages = []
         for currency_name, currency_rate in get_currencies.items():
             currency_rate_messages.append( f'{currency_name} - {currency_rate}' )
 
-        bot.send_message(message.chat.id,'\n'.join(currency_rate_messages))
+        answer('\n'.join(currency_rate_messages))
 
-    elif message.text.lower() == 'weather 🌡️':      
-        bot.send_message(message.chat.id, f'Погода в Минске - температура : {instant_weather["temperature C"]}°C, влажность : {instant_weather["humidity"]}%')
-        if instant_weather["temperature C"] <= 0:         #хардкод индексов. Либо стоит использовать дикт {"temperatur":,"humidity":}, 
-                                    #либо класс weather с полями temperature и humidity
-                                    #либо функции humidity(weather), temperature(weather)
-           bot.send_message(message.chat.id, 'Холодно,нужен шарф(')
+    elif is_message_a('weather 🌡️'):      
+        answer(f'Погода в Минске - температура : {weather["temperature C"]}°C, влажность : {weather["humidity"]}%')
+        
+        if weather["temperature C"] <= 0:
+           answer( 'Холодно,нужен шарф(')
         else:
-           bot.send_message(message.chat.id,'Норм, можно без носков)')
+           answer('Норм, можно без носков)')
     
 #bot.polling()
