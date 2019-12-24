@@ -1,3 +1,4 @@
+from typing import Callable
 import telebot
 from telebot import types
 import requests
@@ -39,8 +40,8 @@ def answer_to_message( message ):
 @bot.message_handler(content_types=['text'])
 def send_message(message):
 
-    is_message_a = is_message_lowercase_an(message)
-    answer       = answer_to_message(message)
+    is_message_a : Callable[[str],bool] = is_message_lowercase_an(message)
+    answer       : Callable[[str],None] = answer_to_message(message)
 
     if is_message_a('movies 🎥'):
         answer('\n'.join(get_movies))
