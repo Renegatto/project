@@ -39,34 +39,36 @@ def All_courses():  #courses или currency rates? По PEP8 - названия
 
 
 # @app.route('/weather', methods=['post', 'get'])
-def Get_weather():
+def get_weather():
+    city = "Minsk"
+    hours = 9
     owm = pyowm.OWM('872dd8157b4dbabef93b11324b5ecabc')
-    city = 'Minsk'
     # if request.method == 'POST':
-    #     city = request.form.get('city') 
+    #     city = request.form.get('city')
     observation = owm.weather_at_place(city)
-    w = observation.get_weather()  #w - плохое имя переменной
-    temp = w.get_temperature('celsius')['temp']
-    humidity = w.get_humidity()
-    #дальше по коду переменные temp и humidity не изменяются
-    #все последующие действия перед return temp, humidity ничего не изменяют и не дают результата
+    weather = observation.get_weather()  #w - плохое имя переменной
 
-    forecaster = owm.three_hours_forecast(city)
-    times = []
-    temps = []
-    for i in range(1, 4):
-        time = datetime.now() + timedelta(days=0, hours=i)  #смещение на 1 час и должно быть? (в project.py все окей)
-        weather = forecaster.get_weather_at(time)           #если нет, то range(4) (если прогноз на сейчас и на три часа вперед)(в project.py все окей)
+    instant_forecast = {
+                "temp": weather.get_temperature('celsius')['temp'],
+            "humidity": weather.get_humidity()
+            }
 
-        times.append( time.strftime('%H:%M') )
-        temps.append( weather.get_temperature('celsius')['temp'] )
+    forecaster = owm.three_hours_forecast(city) #внимательно читаем документацию и видим, что эта функция - прогноз на КАЖДЫЕ 3 часа.
+    forecast_on_several_hours = []              #например, с 7:00 до 10:00 будет в среднем -3 C, с 11:00 до 14:00 будет -1 С и так далее
 
-        info = dict(zip(times, temps))  #по-видимому должно быть снаружи цикла и возвращаться из функции
+    for three_hours in range(0, hours, 3 ):
 
-    return temp, humidity #варианты: return {"temperature":temp, "humidity":humidity}
-                          # return temp, humidity, info
-                          # return info
+        time = datetime.now() + timedelta(days=0, hours=three_hours)  
+        weather = forecaster.get_weather_at(time)           
+
+        forecast_on_current_3_hours = {}
+        forecast_on_current_3_hours["time"]            = time.strftime('%H:%M')
+        forecast_on_current_3_hours["temperature_C"]   = weather.get_temperature('celsius')['temp']
+        forecast_on_current_3_hours["humidity"]        = weather.get_humidity()
+
+        forecast_on_several_hours.append(forecast_on_current_3_hours)
+    return {"instant forecast": instant_forecast ,"several hours forecast": forecast_on_several_hours}
 
 if __name__ == '__main__':
-    app.debug = True
+    #app.debug = True
     app.run()
